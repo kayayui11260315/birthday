@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Gift Tickets</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
   <style>
@@ -18,424 +18,389 @@
       --border:    #E5E0D8;
     }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    html, body { height: 100%; overflow: hidden; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); }
 
-    /* ─── LOGIN ─────────────────────────────────── */
+    /* ─── LOGIN ─────────────────────────────────────── */
     #login-screen {
-      width: 100%;
-      max-width: 380px;
-      padding: 2rem;
-      animation: fadeUp 0.6s ease both;
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem; background: var(--bg); z-index: 200;
+      transition: opacity 0.4s;
     }
-
+    #login-screen.hide { opacity: 0; pointer-events: none; }
+    .l-wrap { width: 100%; max-width: 360px; }
     .l-eyebrow {
-      text-align: center;
-      font-size: 0.65rem;
-      letter-spacing: 0.35em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 1.25rem;
+      text-align: center; font-size: 0.65rem; letter-spacing: 0.35em;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 1.25rem;
     }
-
     .l-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.6rem;
-      font-weight: 400;
-      text-align: center;
-      line-height: 1.2;
-      margin-bottom: 2.75rem;
+      font-family: 'Playfair Display', serif; font-size: 2.6rem;
+      font-weight: 400; text-align: center; line-height: 1.2; margin-bottom: 2.75rem;
     }
-
     .l-title em { font-style: italic; color: var(--gold); }
-
     .field { margin-bottom: 1.75rem; }
-
     .field label {
-      display: block;
-      font-size: 0.62rem;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.55rem;
+      display: block; font-size: 0.62rem; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.55rem;
     }
-
     .field input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      border-bottom: 1.5px solid var(--border);
-      padding: 0.6rem 0;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 1rem;
-      font-weight: 300;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.25s;
+      width: 100%; background: transparent; border: none;
+      border-bottom: 1.5px solid var(--border); padding: 0.6rem 0;
+      font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 300;
+      color: var(--text); outline: none; transition: border-color 0.25s;
     }
-
     .field input:focus { border-color: var(--gold); }
-
     .l-btn {
-      width: 100%;
-      margin-top: 0.25rem;
-      padding: 0.9rem;
-      background: var(--text);
-      color: #fff;
-      border: none;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      cursor: pointer;
+      width: 100%; margin-top: 0.25rem; padding: 0.9rem;
+      background: var(--text); color: #fff; border: none;
+      font-family: 'DM Sans', sans-serif; font-size: 0.72rem;
+      letter-spacing: 0.22em; text-transform: uppercase; cursor: pointer;
       transition: background 0.25s;
     }
-
     .l-btn:hover { background: var(--gold); }
-
     .l-error {
-      margin-top: 1rem;
-      text-align: center;
-      font-size: 0.8rem;
-      color: #C07070;
-      opacity: 0;
-      transition: opacity 0.3s;
+      margin-top: 1rem; text-align: center; font-size: 0.8rem;
+      color: #C07070; opacity: 0; transition: opacity 0.3s;
     }
-
     .l-error.show { opacity: 1; }
 
-    /* ─── TICKETS ────────────────────────────────── */
-    #ticket-screen {
-      display: none;
-      width: 100%;
-      max-width: 540px;
-      min-height: 100vh;
-      padding: 4rem 1.5rem 5rem;
-      margin: 0 auto;
-      animation: fadeUp 0.7s ease both;
+    /* ─── APP SHELL ─────────────────────────────────── */
+    #app-screen { position: fixed; inset: 0; display: flex; flex-direction: column; }
+
+    .app-header {
+      flex-shrink: 0; text-align: center;
+      padding: 1.75rem 1.5rem 1.1rem;
+      background: var(--bg); border-bottom: 1px solid var(--border);
     }
-
-    .t-header { text-align: center; margin-bottom: 3rem; }
-
-    .t-eyebrow {
-      font-size: 0.62rem;
-      letter-spacing: 0.35em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
+    .h-eyebrow {
+      font-size: 0.6rem; letter-spacing: 0.35em;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 0.35rem;
     }
+    .h-title { font-family: 'Playfair Display', serif; font-size: 1.85rem; font-weight: 400; line-height: 1.2; }
+    .h-title em { font-style: italic; color: var(--gold); }
 
-    .t-header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
-      font-weight: 400;
-      line-height: 1.2;
-    }
+    .content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
-    .t-header h1 em { font-style: italic; color: var(--gold); }
+    .view { display: none; padding: 1.5rem 1.25rem 2rem; }
+    .view.active { display: block; animation: fadeSlideUp 0.28s ease both; }
 
-    /* ── Ticket card ── */
-    .ticket-list { display: flex; flex-direction: column; gap: 0.8rem; }
-
+    /* ─── TICKET CARDS ──────────────────────────────── */
+    .ticket-list { display: flex; flex-direction: column; gap: 0.7rem; }
     .ticket {
-      display: flex;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-      transition: box-shadow 0.25s, transform 0.2s;
-      position: relative;
+      display: flex; background: var(--card); border: 1px solid var(--border);
+      border-radius: 2px; overflow: hidden; transition: box-shadow 0.25s, transform 0.2s;
     }
-
     .ticket:not(.empty):not(.used-card):hover {
-      box-shadow: 0 6px 28px rgba(184,147,106,0.14);
-      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(184,147,106,0.14); transform: translateY(-1px);
     }
-
-    /* Perforated stub */
     .stub {
-      width: 50px;
-      min-width: 50px;
-      background: var(--gold);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
+      width: 46px; min-width: 46px; background: var(--gold);
+      display: flex; align-items: center; justify-content: center; position: relative;
     }
-
-    .ticket.empty .stub,
-    .ticket.used-card .stub { background: #DEDAD5; }
-
+    .ticket.empty .stub, .ticket.used-card .stub { background: #DEDAD5; }
     .stub::after {
-      content: '';
-      position: absolute;
-      right: -7px; top: 0; bottom: 0;
-      width: 14px;
+      content: ''; position: absolute; right: -7px; top: 0; bottom: 0; width: 14px;
       background: radial-gradient(circle at left center, var(--bg) 6px, transparent 6px);
-      background-size: 14px 16px;
-      background-position: 0 8px;
+      background-size: 14px 16px; background-position: 0 8px;
     }
-
     .stub span {
-      writing-mode: vertical-rl;
-      font-size: 0.55rem;
-      letter-spacing: 0.22em;
-      color: rgba(255,255,255,0.85);
-      text-transform: uppercase;
+      writing-mode: vertical-rl; font-size: 0.5rem; letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.85); text-transform: uppercase;
     }
-
-    .ticket.empty .stub span,
-    .ticket.used-card .stub span { color: #bbb; }
-
-    /* Card body */
+    .ticket.empty .stub span, .ticket.used-card .stub span { color: #bbb; }
     .t-body {
-      flex: 1;
-      padding: 1.2rem 1.2rem 1.2rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
+      flex: 1; padding: 1.05rem 1.05rem 1.05rem 1.35rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 0.7rem;
     }
-
-    .t-info .t-name {
-      font-size: 0.93rem;
-      font-weight: 500;
-      margin-bottom: 0.3rem;
-    }
-
-    .t-info .t-count {
-      font-size: 0.7rem;
-      color: var(--gold);
-      letter-spacing: 0.05em;
-    }
-
-    .ticket.empty .t-count,
-    .ticket.used-card .t-count { color: var(--muted); }
-
+    .t-info .t-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.25rem; line-height: 1.35; }
+    .t-info .t-count { font-size: 0.67rem; color: var(--gold); letter-spacing: 0.04em; }
+    .ticket.empty .t-count, .ticket.used-card .t-count { color: var(--muted); }
     .use-btn {
-      flex-shrink: 0;
-      padding: 0.48rem 1.05rem;
-      border: 1.5px solid var(--text);
-      background: transparent;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      cursor: pointer;
-      color: var(--text);
-      transition: background 0.2s, color 0.2s;
+      flex-shrink: 0; padding: 0.42rem 0.95rem; border: 1.5px solid var(--text);
+      background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.67rem;
+      letter-spacing: 0.1em; cursor: pointer; color: var(--text);
+      transition: background 0.2s, color 0.2s; white-space: nowrap;
     }
-
     .use-btn:hover:not(:disabled) { background: var(--text); color: #fff; }
-
-    .use-btn:disabled {
-      border-color: var(--border);
-      color: var(--muted);
-      cursor: default;
+    .use-btn:disabled { border-color: var(--border); color: var(--muted); cursor: default; }
+    .used-card { opacity: 0.55; }
+    .used-badge-card {
+      flex-shrink: 0; font-size: 0.63rem; color: var(--muted);
+      padding: 0.35rem 0.65rem; border: 1px solid var(--border);
+      letter-spacing: 0.05em; white-space: nowrap;
     }
+    .empty-state { text-align: center; padding: 4rem 2rem; }
+    .empty-icon { font-size: 2.8rem; margin-bottom: 1rem; opacity: 0.3; }
+    .empty-text { font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
+    .footer-note { text-align: center; margin-top: 2rem; font-size: 0.6rem; color: var(--border); letter-spacing: 0.1em; }
 
-    /* Used card */
-    .ticket.used-card { opacity: 0.55; }
-
-    .used-badge {
-      flex-shrink: 0;
-      font-size: 0.68rem;
-      color: var(--muted);
-      padding: 0.4rem 0.75rem;
-      border: 1px solid var(--border);
-      letter-spacing: 0.08em;
-    }
-
-    /* Section divider */
-    .section-divider {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      margin: 2.25rem 0 1rem;
-    }
-
-    .section-divider span {
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    .section-divider::before,
-    .section-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    /* ─── MODAL ──────────────────────────────────── */
-    #modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(28,28,28,0.45);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-    }
-
-    #modal-overlay.show { display: flex; }
-
-    #modal {
+    /* ─── MESSAGE TAB ────────────────────────────────── */
+    .letter-card {
       background: var(--card);
-      width: 100%;
-      max-width: 340px;
-      padding: 2rem;
+      border: 1px solid var(--border);
       border-radius: 2px;
-      animation: fadeUp 0.25s ease both;
+      padding: 1.75rem;
+      position: relative;
+      margin-bottom: 1.5rem;
     }
-
-    .modal-eyebrow {
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 0.6rem;
+    .letter-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold-pale), var(--gold), var(--gold-pale));
     }
-
-    .modal-ticket-name {
+    .letter-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .letter-to {
+      font-size: 0.6rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--gold);
+    }
+    .letter-date { font-size: 0.62rem; color: var(--muted); letter-spacing: 0.08em; }
+    .letter-text {
       font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
-      font-weight: 400;
-      line-height: 1.4;
-      margin-bottom: 1.25rem;
+      font-size: 0.97rem; font-weight: 400; line-height: 2.1; color: var(--text);
+    }
+    .letter-signature {
+      margin-top: 1.5rem; text-align: right;
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 0.9rem; color: var(--muted);
     }
 
-    .modal-warning {
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.65;
-      margin-bottom: 1.75rem;
-      padding: 0.75rem 0.9rem;
-      background: var(--bg);
-      border-left: 2px solid var(--gold);
+    /* Photo grid */
+    .photo-label {
+      font-size: 0.6rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.85rem;
+    }
+    .photo-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+    }
+    .photo-item {
+      aspect-ratio: 1; overflow: hidden; background: var(--border);
+      border-radius: 2px; display: flex; align-items: center; justify-content: center;
+    }
+    .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo-item.empty-photo img { display: none; }
+    .photo-item.empty-photo::after { content: '📷'; font-size: 1.75rem; opacity: 0.2; }
+
+    /* ─── TAB BAR ────────────────────────────────────── */
+    .tab-bar {
+      flex-shrink: 0; display: flex;
+      background: var(--card); border-top: 1px solid var(--border);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    .tab-btn {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 0.28rem; padding: 0.7rem 0.5rem;
+      background: transparent; border: none; cursor: pointer;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .tab-btn.active { color: var(--gold); }
+    .tab-icon-wrap { position: relative; display: inline-flex; }
+    .tab-btn svg {
+      width: 20px; height: 20px; stroke: currentColor;
+      fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .tab-label { font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .tab-badge {
+      position: absolute; top: -5px; right: -8px;
+      background: #C07070; color: white; font-size: 0.52rem;
+      min-width: 15px; height: 15px; border-radius: 8px;
+      display: none; align-items: center; justify-content: center;
+      padding: 0 3px; font-weight: 500;
     }
 
-    .modal-btns { display: flex; gap: 0.75rem; }
-
-    .modal-cancel {
-      flex: 1;
-      padding: 0.8rem;
-      background: transparent;
-      border: 1.5px solid var(--border);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      cursor: pointer;
-      color: var(--muted);
-      transition: border-color 0.2s, color 0.2s;
+    /* ─── MODAL ──────────────────────────────────────── */
+    #modal-overlay {
+      position: fixed; inset: 0; background: rgba(28,28,28,0);
+      z-index: 400; display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem; pointer-events: none; transition: background 0.3s;
     }
-
-    .modal-cancel:hover { border-color: var(--muted); color: var(--text); }
-
-    .modal-confirm {
-      flex: 1;
-      padding: 0.8rem;
-      background: var(--text);
-      border: none;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      cursor: pointer;
-      color: white;
-      transition: background 0.2s;
+    #modal-overlay.show {
+      background: rgba(28,28,28,0.5); pointer-events: all;
+      backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
     }
-
-    .modal-confirm:hover { background: var(--gold); }
-
-    /* ─── Footer & Animations ────────────────────── */
-    .t-footer {
-      text-align: center;
-      margin-top: 2.75rem;
-      font-size: 0.62rem;
-      color: var(--border);
-      letter-spacing: 0.12em;
+    #modal {
+      background: var(--card); width: 100%; max-width: 315px;
+      padding: 1.7rem; border-radius: 2px;
+      transform: scale(0.92) translateY(10px); opacity: 0;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s;
     }
+    #modal-overlay.show #modal { transform: scale(1) translateY(0); opacity: 1; }
+    .m-eyebrow { font-size: 0.58rem; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.45rem; }
+    .m-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 400; line-height: 1.4; margin-bottom: 1.1rem; }
+    .m-warning { font-size: 0.75rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; padding: 0.65rem 0.8rem; background: var(--bg); border-left: 2px solid var(--gold); }
+    .m-btns { display: flex; gap: 0.6rem; }
+    .m-cancel {
+      flex: 1; padding: 0.72rem; background: transparent; border: 1.5px solid var(--border);
+      font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.1em;
+      cursor: pointer; color: var(--muted); transition: border-color 0.2s, color 0.2s;
+    }
+    .m-cancel:hover { border-color: var(--muted); color: var(--text); }
+    .m-confirm {
+      flex: 1; padding: 0.72rem; background: var(--text); border: none;
+      font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.1em;
+      cursor: pointer; color: white; transition: background 0.2s;
+    }
+    .m-confirm:hover { background: var(--gold); }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
+    /* ─── Animations ─────────────────────────────────── */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(10px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes ticketFlash {
       0%   { background: var(--gold-pale); }
       100% { background: var(--card); }
     }
-
-    .ticket.flash { animation: ticketFlash 0.55s ease forwards; }
-
-    @media (max-width: 480px) {
-      .stub { width: 42px; min-width: 42px; }
-      .t-header h1 { font-size: 1.9rem; }
-      .l-title { font-size: 2.1rem; }
-    }
+    .ticket.flash { animation: ticketFlash 0.5s ease forwards; }
   </style>
 </head>
 <body>
 
   <!-- ===== LOGIN ===== -->
   <div id="login-screen">
-    <p class="l-eyebrow">Birthday Gift</p>
-    <h1 class="l-title">Open<br><em>your gift</em></h1>
-    <div class="field">
-      <label for="inp-id">Name</label>
-      <input type="text" id="inp-id" placeholder="your name"
-             autocomplete="off" autocapitalize="none" spellcheck="false">
+    <div class="l-wrap">
+      <p class="l-eyebrow">Birthday Gift</p>
+      <h1 class="l-title">Open<br><em>your gift</em></h1>
+      <div class="field">
+        <label for="inp-id">Name</label>
+        <input type="text" id="inp-id" placeholder="your name"
+               autocomplete="off" autocapitalize="none" spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="inp-pw">Birthday</label>
+        <input type="password" id="inp-pw" placeholder="••••••••">
+      </div>
+      <button class="l-btn" id="login-btn">Open →</button>
+      <p class="l-error" id="l-error">もう一度確認してみて 🔒</p>
     </div>
-    <div class="field">
-      <label for="inp-pw">Birthday</label>
-      <input type="password" id="inp-pw" placeholder="••••••••">
-    </div>
-    <button class="l-btn" id="login-btn">Open →</button>
-    <p class="l-error" id="l-error">IDまたはパスワードが違うよ 🔒</p>
   </div>
 
-  <!-- ===== TICKETS ===== -->
-  <div id="ticket-screen">
-    <div class="t-header">
-      <p class="t-eyebrow">For えり</p>
-      <h1>Happy<br><em>Birthday</em> 🎂</h1>
-    </div>
-    <div class="ticket-list" id="ticket-list"></div>
-    <div id="used-section" style="display:none">
-      <div class="section-divider"><span>使用済み</span></div>
-      <div class="ticket-list" id="used-list"></div>
-    </div>
-    <p class="t-footer">ページを更新すると枚数はリセットされます</p>
+  <!-- ===== APP ===== -->
+  <div id="app-screen" style="display:none">
+
+    <header class="app-header">
+      <p class="h-eyebrow">For Eririn</p>
+      <h1 class="h-title">Happy <em>Birthday</em> 🎂</h1>
+    </header>
+
+    <main class="content">
+
+      <!-- ① チケット -->
+      <div id="view-tickets" class="view active">
+        <div class="ticket-list" id="ticket-list"></div>
+        <p class="footer-note">使用した枚数はこの端末に保存されます</p>
+      </div>
+
+      <!-- ② メッセージ -->
+      <div id="view-message" class="view">
+
+        <div class="letter-card">
+          <div class="letter-meta">
+            <span class="letter-to">To えりりん</span>
+            <!-- ↓ 日付を変更してください -->
+            <span class="letter-date">2026.10.22</span>
+          </div>
+
+          <!-- ↓↓ ここにメッセージを自由に書き換えてください ↓↓ -->
+          <p class="letter-text">
+            えりりん、<br>
+            お誕生日おめでとう 🎂<br><br>
+            いつも一緒にいてくれてありがとう。<br>
+            君と過ごす時間がとても大切で、<br>
+            これからも二人で<br>
+            素敵な思い出を作っていきたいな。<br><br>
+            大好きだよ ♡
+          </p>
+          <!-- ↑↑ メッセージここまで ↑↑ -->
+
+          <div class="letter-signature">
+            <!-- ↓ 名前を変更してください -->
+            __ より
+          </div>
+        </div>
+
+        <!-- 写真グリッド -->
+        <!--
+          【写真の追加方法】
+          1. GitHubリポジトリに写真ファイルをアップロード
+          2. ファイル名を photo1.jpg ~ photo6.jpg にする
+          3. 自動で表示されます（写真がない場合は 📷 が表示）
+        -->
+        <p class="photo-label">思い出の写真</p>
+        <div class="photo-grid">
+          <div class="photo-item" id="p1"><img src="photo1.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('empty-photo')"></div>
+          <div class="photo-item" id="p2"><img src="photo2.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('empty-photo')"></div>
+          <div class="photo-item" id="p3"><img src="photo3.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('empty-photo')"></div>
+          <div class="photo-item" id="p4"><img src="photo4.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('empty-photo')"></div>
+          <div class="photo-item" id="p5"><img src="photo5.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('empty-photo')"></div>
+          <div class="photo-item" id="p6"><img src="photo6.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('empty-photo')"></div>
+        </div>
+
+      </div>
+
+      <!-- ③ 使用済み -->
+      <div id="view-used" class="view">
+        <div id="used-empty" class="empty-state">
+          <div class="empty-icon">🎟️</div>
+          <p class="empty-text">まだ使用した<br>チケットはありません</p>
+        </div>
+        <div class="ticket-list" id="used-list"></div>
+      </div>
+
+    </main>
+
+    <nav class="tab-bar">
+      <!-- チケット -->
+      <button class="tab-btn active" id="tab-tickets" onclick="switchTab('tickets',this)">
+        <div class="tab-icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <path d="M2 9V7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4Z"/>
+          </svg>
+        </div>
+        <span class="tab-label">チケット</span>
+      </button>
+      <!-- メッセージ -->
+      <button class="tab-btn" id="tab-message" onclick="switchTab('message',this)">
+        <div class="tab-icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </div>
+        <span class="tab-label">メッセージ</span>
+      </button>
+      <!-- 使用済み -->
+      <button class="tab-btn" id="tab-used" onclick="switchTab('used',this)">
+        <div class="tab-icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <path d="M9 11l3 3L22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+          <span class="tab-badge" id="used-badge">0</span>
+        </div>
+        <span class="tab-label">使用済み</span>
+      </button>
+    </nav>
+
   </div>
 
   <!-- ===== MODAL ===== -->
-  <div id="modal-overlay">
-    <div id="modal">
-      <p class="modal-eyebrow">Confirm</p>
-      <p class="modal-ticket-name" id="modal-ticket-name"></p>
-      <p class="modal-warning">使用すると再度利用することはできません。<br>本当に使いますか？</p>
-      <div class="modal-btns">
-        <button class="modal-cancel" onclick="closeModal()">キャンセル</button>
-        <button class="modal-confirm" onclick="confirmUse()">使う</button>
+  <div id="modal-overlay" onclick="closeModal()">
+    <div id="modal" onclick="event.stopPropagation()">
+      <p class="m-eyebrow">Confirm</p>
+      <p class="m-name" id="m-name"></p>
+      <p class="m-warning">使用すると再度利用することはできません。<br>本当に使いますか？</p>
+      <div class="m-btns">
+        <button class="m-cancel" onclick="closeModal()">キャンセル</button>
+        <button class="m-confirm" onclick="confirmUse()">使う</button>
       </div>
     </div>
   </div>
 
   <script>
-    // ============================================================
-    //  ▼ ここだけ変更してください
     // ============================================================
     const CORRECT_ID = 'eririn';
     const CORRECT_PW = '20261022';
@@ -443,76 +408,109 @@
 
     const TICKETS = [
       { id: 1, name: '欲しいもの一点買えるよ券', total: 1 },
-      { id: 2, name: '1日なんでも言うこと聞く券',  total: 5 },
-      { id: 3, name: 'デパコス購入券',             total: 3 },
+      { id: 2, name: '1日なんでも言うこと聞く券', total: 5 },
+      { id: 3, name: 'デパコス購入券', total: 3 },
     ];
 
-    const counts    = Object.fromEntries(TICKETS.map(t => [t.id, t.total]));
+    const counts     = Object.fromEntries(TICKETS.map(t => [t.id, t.total]));
     const usedCounts = Object.fromEntries(TICKETS.map(t => [t.id, 0]));
-    let pendingId   = null;
+    let   pendingId  = null;
+    let   currentTab = 'tickets';
 
-    // ── Login ──
+    const STORAGE_KEY = 'gift_tickets_eririn_2026';
+
+    function saveState() {
+      try {
+        const data = {};
+        TICKETS.forEach(t => { data[t.id] = { rem: counts[t.id], used: usedCounts[t.id] }; });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch(e) {}
+    }
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return;
+        const data = JSON.parse(saved);
+        TICKETS.forEach(t => {
+          if (data[t.id] !== undefined) {
+            counts[t.id]     = data[t.id].rem;
+            usedCounts[t.id] = data[t.id].used;
+          }
+        });
+      } catch(e) {}
+    }
+
+    /* ── Login ── */
     function tryLogin() {
       const id  = document.getElementById('inp-id').value.trim().toLowerCase();
       const pw  = document.getElementById('inp-pw').value.trim();
       const err = document.getElementById('l-error');
       if (id === CORRECT_ID.toLowerCase() && pw === CORRECT_PW) {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('ticket-screen').style.display = 'block';
-        renderAll();
+        const ls = document.getElementById('login-screen');
+        ls.classList.add('hide');
+        setTimeout(() => {
+          ls.style.display = 'none';
+          document.getElementById('app-screen').style.display = 'flex';
+          loadState();
+          updateBadge();
+          renderTickets();
+        }, 400);
       } else {
         err.classList.add('show');
         setTimeout(() => err.classList.remove('show'), 2500);
       }
     }
-
     document.getElementById('login-btn').addEventListener('click', tryLogin);
     document.addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
 
-    // ── Modal ──
+    /* ── Tab ── */
+    function switchTab(tab, btn) {
+      if (tab === currentTab) return;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const old = document.getElementById('view-' + currentTab);
+      const next = document.getElementById('view-' + tab);
+      old.classList.remove('active');
+      next.classList.remove('active');
+      void next.offsetWidth;
+      next.classList.add('active');
+      currentTab = tab;
+      if (tab === 'used') renderUsed();
+    }
+
+    /* ── Modal ── */
     function openModal(id) {
-      const t = TICKETS.find(t => t.id === id);
       pendingId = id;
-      document.getElementById('modal-ticket-name').textContent = t.name;
+      document.getElementById('m-name').textContent = TICKETS.find(t => t.id === id).name;
       document.getElementById('modal-overlay').classList.add('show');
     }
-
     function closeModal() {
-      pendingId = null;
       document.getElementById('modal-overlay').classList.remove('show');
+      pendingId = null;
     }
-
     function confirmUse() {
       if (pendingId === null) return;
       const id = pendingId;
       closeModal();
       counts[id]--;
       usedCounts[id]++;
+      saveState();
+      updateBadge();
       const el = document.getElementById('tk-' + id);
       if (el) {
         el.classList.add('flash');
-        el.addEventListener('animationend', () => {
-          el.classList.remove('flash');
-          renderAll();
-        }, { once: true });
-      } else {
-        renderAll();
-      }
+        el.addEventListener('animationend', () => { el.classList.remove('flash'); renderTickets(); }, { once: true });
+      } else { renderTickets(); }
     }
 
-    // Close modal on overlay click
-    document.getElementById('modal-overlay').addEventListener('click', function(e) {
-      if (e.target === this) closeModal();
-    });
-
-    // ── Render active tickets ──
-    function renderActive() {
+    /* ── Render tickets ── */
+    function renderTickets() {
       const list = document.getElementById('ticket-list');
       list.innerHTML = '';
       TICKETS.forEach(t => {
-        const rem   = counts[t.id];
-        const empty = rem === 0;
-        const el    = document.createElement('div');
+        const rem = counts[t.id], empty = rem === 0;
+        const el = document.createElement('div');
         el.className = 'ticket' + (empty ? ' empty' : '');
         el.id = 'tk-' + t.id;
         el.innerHTML = `
@@ -520,35 +518,27 @@
           <div class="t-body">
             <div class="t-info">
               <div class="t-name">${t.name}</div>
-              <div class="t-count">
-                ${empty ? '使い切りました' : `残り <strong>${rem}</strong> 枚`}
-              </div>
+              <div class="t-count">${empty ? '使い切りました' : `残り <strong>${rem}</strong> 枚`}</div>
             </div>
-            <button class="use-btn" data-id="${t.id}" ${empty ? 'disabled' : ''}>
-              ${empty ? '済' : '使う'}
-            </button>
+            <button class="use-btn" data-id="${t.id}" ${empty ? 'disabled' : ''}>${empty ? '済' : '使う'}</button>
           </div>`;
         list.appendChild(el);
       });
-
       list.querySelectorAll('.use-btn:not(:disabled)').forEach(btn => {
         btn.addEventListener('click', () => openModal(Number(btn.dataset.id)));
       });
     }
 
-    // ── Render used section ──
+    /* ── Render used ── */
     function renderUsed() {
-      const section = document.getElementById('used-section');
-      const list    = document.getElementById('used-list');
-      const anyUsed = TICKETS.some(t => usedCounts[t.id] > 0);
-
-      if (!anyUsed) { section.style.display = 'none'; return; }
-      section.style.display = 'block';
-
-      list.innerHTML = '';
+      const usedList = document.getElementById('used-list');
+      const emptyEl  = document.getElementById('used-empty');
+      const anyUsed  = TICKETS.some(t => usedCounts[t.id] > 0);
+      if (!anyUsed) { emptyEl.style.display = 'block'; usedList.innerHTML = ''; return; }
+      emptyEl.style.display = 'none';
+      usedList.innerHTML = '';
       TICKETS.forEach(t => {
-        const used = usedCounts[t.id];
-        if (used === 0) return;
+        if (usedCounts[t.id] === 0) return;
         const el = document.createElement('div');
         el.className = 'ticket used-card';
         el.innerHTML = `
@@ -556,17 +546,20 @@
           <div class="t-body">
             <div class="t-info">
               <div class="t-name">${t.name}</div>
-              <div class="t-count">${used}枚 使用済み</div>
+              <div class="t-count">${usedCounts[t.id]}枚 使用済み</div>
             </div>
-            <span class="used-badge">✓ 使用済</span>
+            <span class="used-badge-card">✓ 済</span>
           </div>`;
-        list.appendChild(el);
+        usedList.appendChild(el);
       });
     }
 
-    function renderAll() {
-      renderActive();
-      renderUsed();
+    /* ── Badge ── */
+    function updateBadge() {
+      const total = TICKETS.reduce((s, t) => s + usedCounts[t.id], 0);
+      const badge = document.getElementById('used-badge');
+      badge.textContent = total;
+      badge.style.display = total > 0 ? 'flex' : 'none';
     }
   </script>
 </body>
