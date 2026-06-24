@@ -369,7 +369,7 @@
     <header class="app-header">
       <p class="h-eyebrow">えりさん</p>
       <h1 class="h-title">Happy <em>Birthday</em> 🎂</h1>
-      <p id="admin-badge" style="display:none;margin-top:0.4rem;font-size:0.6rem;letter-spacing:0.15em;color:var(--muted);">👀 管理者モード</p>
+      <p id="admin-badge" style="display:none;margin-top:0.4rem;font-size:0.6rem;letter-spacing:0.15em;color:var(--muted);">管理者モード</p>
     </header>
 
     <main class="content">
@@ -474,7 +474,8 @@
     const CORRECT_ID = 'eririn';
     const CORRECT_PW = '20261022';
     // 誕生日：日本時間 2026年10月22日 0:00
-    const BIRTHDAY   = new Date('2026-10-22T00:00:00+09:00');
+    const BIRTHDAY = new Date(Date.now() + 60 * 1000); // ← テスト用：1分後に解放
+    //const BIRTHDAY   = new Date('2026-10-22T00:00:00+09:00');  //本番用
 
     // ============================================================
     //  ▼ 管理者ログイン情報（自分用）
