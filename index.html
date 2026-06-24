@@ -65,6 +65,76 @@
     }
     .l-error.show { opacity: 1; }
 
+    /* ─── COUNTDOWN ──────────────────────────────────── */
+    #countdown-screen {
+      position: fixed; inset: 0;
+      display: none; align-items: center; justify-content: center;
+      padding: 2rem; background: var(--bg); z-index: 150;
+      transition: opacity 0.6s;
+    }
+    #countdown-screen.fade-out { opacity: 0; pointer-events: none; }
+
+    .cd-wrap { width: 100%; max-width: 360px; text-align: center; }
+
+    .cd-eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.35em;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .cd-title {
+      font-family: 'Playfair Display', serif; font-size: 2.2rem;
+      font-weight: 400; line-height: 1.25; margin-bottom: 0.4rem;
+    }
+    .cd-title em { font-style: italic; color: var(--gold); }
+    .cd-until {
+      font-size: 0.72rem; color: var(--muted); letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 2.5rem;
+    }
+
+    .cd-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+    .cd-unit {
+      background: var(--card); border: 1px solid var(--border); border-radius: 2px;
+      padding: 1rem 0.5rem;
+      position: relative; overflow: hidden;
+    }
+    .cd-unit::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--gold);
+    }
+    .cd-num {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; font-weight: 400; color: var(--gold); line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .cd-num.tick {
+      animation: numPop 0.2s ease both;
+    }
+    .cd-lbl {
+      display: block;
+      font-size: 0.55rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    .cd-msg {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 1.05rem; color: var(--muted);
+    }
+
+    /* Unlock animation */
+    .unlock-wrap {
+      text-align: center; animation: fadeSlideUp 0.5s ease both;
+    }
+    .unlock-emoji { font-size: 4rem; margin-bottom: 1rem; }
+    .unlock-title {
+      font-family: 'Playfair Display', serif; font-size: 2.2rem;
+      font-weight: 400; line-height: 1.25; margin-bottom: 0.5rem;
+    }
+    .unlock-title em { font-style: italic; color: var(--gold); }
+    .unlock-sub { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.15em; }
+
     /* ─── APP SHELL ─────────────────────────────────── */
     #app-screen { position: fixed; inset: 0; display: flex; flex-direction: column; }
 
@@ -77,7 +147,10 @@
       font-size: 0.6rem; letter-spacing: 0.35em;
       color: var(--gold); text-transform: uppercase; margin-bottom: 0.35rem;
     }
-    .h-title { font-family: 'Playfair Display', serif; font-size: 1.85rem; font-weight: 400; line-height: 1.2; }
+    .h-title {
+      font-family: 'Playfair Display', serif; font-size: 1.85rem;
+      font-weight: 400; line-height: 1.2;
+    }
     .h-title em { font-style: italic; color: var(--gold); }
 
     .content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
@@ -137,16 +210,11 @@
 
     /* ─── MESSAGE TAB ────────────────────────────────── */
     .letter-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      padding: 1.75rem;
-      position: relative;
-      margin-bottom: 1.5rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 2px; padding: 1.75rem; position: relative;
     }
     .letter-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
       background: linear-gradient(90deg, var(--gold-pale), var(--gold), var(--gold-pale));
     }
     .letter-meta {
@@ -167,22 +235,6 @@
       font-family: 'Playfair Display', serif;
       font-style: italic; font-size: 0.9rem; color: var(--muted);
     }
-
-    /* Photo grid */
-    .photo-label {
-      font-size: 0.6rem; letter-spacing: 0.3em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 0.85rem;
-    }
-    .photo-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
-    }
-    .photo-item {
-      aspect-ratio: 1; overflow: hidden; background: var(--border);
-      border-radius: 2px; display: flex; align-items: center; justify-content: center;
-    }
-    .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .photo-item.empty-photo img { display: none; }
-    .photo-item.empty-photo::after { content: '📷'; font-size: 1.75rem; opacity: 0.2; }
 
     /* ─── TAB BAR ────────────────────────────────────── */
     .tab-bar {
@@ -251,6 +303,10 @@
       from { opacity: 0; transform: translateY(10px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+    @keyframes numPop {
+      0%   { opacity: 0; transform: translateY(-6px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
     @keyframes ticketFlash {
       0%   { background: var(--gold-pale); }
       100% { background: var(--card); }
@@ -279,12 +335,41 @@
     </div>
   </div>
 
+  <!-- ===== COUNTDOWN ===== -->
+  <div id="countdown-screen">
+    <div class="cd-wrap" id="cd-wrap">
+      <p class="cd-eyebrow">For Eririn</p>
+      <h1 class="cd-title">Happy<br><em>Birthday</em></h1>
+      <p class="cd-until">まで あと...</p>
+      <div class="cd-grid">
+        <div class="cd-unit">
+          <span class="cd-num" id="cd-days">--</span>
+          <span class="cd-lbl">日</span>
+        </div>
+        <div class="cd-unit">
+          <span class="cd-num" id="cd-hours">--</span>
+          <span class="cd-lbl">時間</span>
+        </div>
+        <div class="cd-unit">
+          <span class="cd-num" id="cd-mins">--</span>
+          <span class="cd-lbl">分</span>
+        </div>
+        <div class="cd-unit">
+          <span class="cd-num" id="cd-secs">--</span>
+          <span class="cd-lbl">秒</span>
+        </div>
+      </div>
+      <p class="cd-msg">誕生日までお楽しみに🎂</p>
+    </div>
+  </div>
+
   <!-- ===== APP ===== -->
   <div id="app-screen" style="display:none">
 
     <header class="app-header">
-      <p class="h-eyebrow">For Eririn</p>
+      <p class="h-eyebrow">えりさん</p>
       <h1 class="h-title">Happy <em>Birthday</em> 🎂</h1>
+      <p id="admin-badge" style="display:none;margin-top:0.4rem;font-size:0.6rem;letter-spacing:0.15em;color:var(--muted);">👀 管理者モード</p>
     </header>
 
     <main class="content">
@@ -297,49 +382,29 @@
 
       <!-- ② メッセージ -->
       <div id="view-message" class="view">
-
         <div class="letter-card">
           <div class="letter-meta">
-            <span class="letter-to">To えりりん</span>
+            <span class="letter-to"> えりへ　</span>
             <!-- ↓ 日付を変更してください -->
             <span class="letter-date">2026.10.22</span>
           </div>
-
           <!-- ↓↓ ここにメッセージを自由に書き換えてください ↓↓ -->
           <p class="letter-text">
-            えりりん、<br>
+            えり、<br>
             お誕生日おめでとう 🎂<br><br>
-            いつも一緒にいてくれてありがとう。<br>
-            君と過ごす時間がとても大切で、<br>
-            これからも二人で<br>
-            素敵な思い出を作っていきたいな。<br><br>
-            大好きだよ ♡
+            色々と覚えが悪くて怒らせちゃったりしてごめんね。<br>
+            たまに言い方強くて泣きそうな時もあったけど<br>
+            なんだかんだ優しくしてくれたえりが好きです<br>
+            去年は色々話すことが多くあったけど<br>
+            今年、来年からはまたもっと仲良く楽しく一緒に過ごそうね<br>
+            大好きだよ
           </p>
           <!-- ↑↑ メッセージここまで ↑↑ -->
-
           <div class="letter-signature">
             <!-- ↓ 名前を変更してください -->
-            __ より
+            ゆいと より
           </div>
         </div>
-
-        <!-- 写真グリッド -->
-        <!--
-          【写真の追加方法】
-          1. GitHubリポジトリに写真ファイルをアップロード
-          2. ファイル名を photo1.jpg ~ photo6.jpg にする
-          3. 自動で表示されます（写真がない場合は 📷 が表示）
-        -->
-        <p class="photo-label">思い出の写真</p>
-        <div class="photo-grid">
-          <div class="photo-item" id="p1"><img src="photo1.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('empty-photo')"></div>
-          <div class="photo-item" id="p2"><img src="photo2.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('empty-photo')"></div>
-          <div class="photo-item" id="p3"><img src="photo3.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('empty-photo')"></div>
-          <div class="photo-item" id="p4"><img src="photo4.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('empty-photo')"></div>
-          <div class="photo-item" id="p5"><img src="photo5.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('empty-photo')"></div>
-          <div class="photo-item" id="p6"><img src="photo6.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('empty-photo')"></div>
-        </div>
-
       </div>
 
       <!-- ③ 使用済み -->
@@ -354,7 +419,6 @@
     </main>
 
     <nav class="tab-bar">
-      <!-- チケット -->
       <button class="tab-btn active" id="tab-tickets" onclick="switchTab('tickets',this)">
         <div class="tab-icon-wrap">
           <svg viewBox="0 0 24 24">
@@ -363,7 +427,6 @@
         </div>
         <span class="tab-label">チケット</span>
       </button>
-      <!-- メッセージ -->
       <button class="tab-btn" id="tab-message" onclick="switchTab('message',this)">
         <div class="tab-icon-wrap">
           <svg viewBox="0 0 24 24">
@@ -372,7 +435,6 @@
         </div>
         <span class="tab-label">メッセージ</span>
       </button>
-      <!-- 使用済み -->
       <button class="tab-btn" id="tab-used" onclick="switchTab('used',this)">
         <div class="tab-icon-wrap">
           <svg viewBox="0 0 24 24">
@@ -404,6 +466,17 @@
     // ============================================================
     const CORRECT_ID = 'eririn';
     const CORRECT_PW = '20261022';
+    // 誕生日：日本時間 2026年10月22日 0:00
+    const BIRTHDAY   = new Date('2026-10-22T00:00:00+09:00');
+
+    // ============================================================
+    //  ▼ 管理者ログイン情報（自分用）
+    // ============================================================
+    const ADMIN_ID = 'admin';     // ← 好きな名前に変更してください
+    const ADMIN_PW = 'admin0000'; // ← 好きなパスワードに変更してください
+    // ============================================================
+
+    let isAdmin = false;
     // ============================================================
 
     const TICKETS = [
@@ -416,6 +489,7 @@
     const usedCounts = Object.fromEntries(TICKETS.map(t => [t.id, 0]));
     let   pendingId  = null;
     let   currentTab = 'tickets';
+    let   cdTimer    = null;
 
     const STORAGE_KEY = 'gift_tickets_eririn_2026';
 
@@ -447,14 +521,24 @@
       const pw  = document.getElementById('inp-pw').value.trim();
       const err = document.getElementById('l-error');
       if (id === CORRECT_ID.toLowerCase() && pw === CORRECT_PW) {
+        isAdmin = false;
         const ls = document.getElementById('login-screen');
         ls.classList.add('hide');
         setTimeout(() => {
           ls.style.display = 'none';
-          document.getElementById('app-screen').style.display = 'flex';
-          loadState();
-          updateBadge();
-          renderTickets();
+          if (new Date() >= BIRTHDAY) {
+            openApp();
+          } else {
+            startCountdown();
+          }
+        }, 400);
+      } else if (id === ADMIN_ID.toLowerCase() && pw === ADMIN_PW) {
+        isAdmin = true;
+        const ls = document.getElementById('login-screen');
+        ls.classList.add('hide');
+        setTimeout(() => {
+          ls.style.display = 'none';
+          openApp();
         }, 400);
       } else {
         err.classList.add('show');
@@ -464,12 +548,72 @@
     document.getElementById('login-btn').addEventListener('click', tryLogin);
     document.addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
 
+    /* ── Countdown ── */
+    function startCountdown() {
+      const cs = document.getElementById('countdown-screen');
+      cs.style.display = 'flex';
+      updateCountdown();
+      cdTimer = setInterval(() => {
+        if (new Date() >= BIRTHDAY) {
+          clearInterval(cdTimer);
+          unlock();
+        } else {
+          updateCountdown();
+        }
+      }, 1000);
+    }
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function setNum(id, val) {
+      const el = document.getElementById(id);
+      if (el && el.textContent !== val) {
+        el.textContent = val;
+        el.classList.remove('tick');
+        void el.offsetWidth;
+        el.classList.add('tick');
+      }
+    }
+
+    function updateCountdown() {
+      const diff = BIRTHDAY - new Date();
+      if (diff <= 0) return;
+      setNum('cd-days',  pad(Math.floor(diff / 86400000)));
+      setNum('cd-hours', pad(Math.floor((diff % 86400000) / 3600000)));
+      setNum('cd-mins',  pad(Math.floor((diff % 3600000)  / 60000)));
+      setNum('cd-secs',  pad(Math.floor((diff % 60000)    / 1000)));
+    }
+
+    function unlock() {
+      const wrap = document.getElementById('cd-wrap');
+      wrap.innerHTML = `
+        <div class="unlock-wrap">
+          <p class="unlock-emoji">🎂</p>
+          <h1 class="unlock-title">Happy<br><em>Birthday</em></h1>
+          <p class="unlock-sub" style="margin-top:0.75rem">えり 🎉</p>
+        </div>`;
+      setTimeout(() => {
+        const cs = document.getElementById('countdown-screen');
+        cs.classList.add('fade-out');
+        setTimeout(() => { cs.style.display = 'none'; openApp(); }, 600);
+      }, 2500);
+    }
+
+    function openApp() {
+      loadState();
+      updateBadge();
+      renderTickets();
+      const badge = document.getElementById('admin-badge');
+      if (badge) badge.style.display = isAdmin ? 'block' : 'none';
+      document.getElementById('app-screen').style.display = 'flex';
+    }
+
     /* ── Tab ── */
     function switchTab(tab, btn) {
       if (tab === currentTab) return;
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const old = document.getElementById('view-' + currentTab);
+      const old  = document.getElementById('view-' + currentTab);
       const next = document.getElementById('view-' + tab);
       old.classList.remove('active');
       next.classList.remove('active');
