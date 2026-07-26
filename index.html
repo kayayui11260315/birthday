@@ -139,6 +139,19 @@
     .pref.has-memory:hover,
     .pref.has-memory:active { fill: var(--pref-green-dark); }
 
+    /* ─── MAP PINS（タップしやすい大きなピン） ─── */
+    .map-pin { cursor: pointer; }
+    .pin-pulse {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: pinPulse 2.4s ease-out infinite;
+    }
+    @keyframes pinPulse {
+      0%   { transform: scale(1);   opacity: 0.55; }
+      70%  { transform: scale(1.9); opacity: 0.08; }
+      100% { transform: scale(2.0); opacity: 0; }
+    }
+
     .map-legend { display: flex; gap: 1.5rem; justify-content: center; margin-top: 0.85rem; }
     .legend-row { display: flex; align-items: center; gap: 0.45rem; font-size: 0.65rem; color: var(--muted); }
     .legend-dot { width: 9px; height: 9px; border-radius: 50%; }
@@ -683,6 +696,63 @@
 
       // ロード完了
       loading.style.display = 'none';
+
+      // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      // 思い出ピンを各都道府県の中央に追加
+      // 大きくてタップしやすい丸いマーカー
+      // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      const pinGroup = svg.append('g').attr('class', 'pin-layer');
+
+      geojson.features.forEach(feature => {
+        const code = getPrefCode(feature.properties);
+        if (!MEMORIES[code]) return;
+
+        const centroid = pathGen.centroid(feature);
+        if (!centroid || isNaN(centroid[0]) || isNaN(centroid[1])) return;
+
+        const [cx, cy] = centroid;
+        const photoCount = MEMORIES[code].slides.length;
+        const g = pinGroup.append('g')
+          .attr('transform', `translate(${cx},${cy})`)
+          .attr('class', 'map-pin')
+          .on('click', () => openStory(code));
+
+        // タップ領域（透明・大きい・スマホで押しやすいサイズ）
+        g.append('circle')
+          .attr('r', 28)
+          .attr('fill', 'transparent');
+
+        // パルスアニメーション（外側リング）
+        g.append('circle')
+          .attr('r', 20)
+          .attr('fill', 'rgba(107,158,107,0.25)')
+          .attr('class', 'pin-pulse');
+
+        // 影（立体感）
+        g.append('circle')
+          .attr('r', 16)
+          .attr('fill', 'rgba(0,0,0,0.15)')
+          .attr('transform', 'translate(0,2)');
+
+        // メインのピン本体
+        g.append('circle')
+          .attr('r', 15)
+          .attr('fill', 'var(--pref-green)')
+          .attr('stroke', 'white')
+          .attr('stroke-width', 2.5);
+
+        // 写真枚数
+        g.append('text')
+          .attr('text-anchor', 'middle')
+          .attr('dominant-baseline', 'central')
+          .attr('fill', 'white')
+          .attr('font-size', photoCount > 9 ? '8' : '9.5')
+          .attr('font-weight', '700')
+          .attr('font-family', 'DM Sans, sans-serif')
+          .attr('pointer-events', 'none')
+          .text(photoCount);
+      });
+
       mapInitialized = true;
 
     } catch (err) {
