@@ -474,8 +474,6 @@
     if(mapRendered){updateMapColors();return;}
     const loading=document.getElementById('map-loading');
     try{
-      // @svg-maps/japan を esm.sh 経由で動的import
-      // ・D3不要・GeoJSON不要・CORS問題なし
       const mod = await import('https://esm.sh/@svg-maps/japan');
       const japanMap = mod.default || mod;
 
@@ -490,7 +488,6 @@
         const path=document.createElementNS('http://www.w3.org/2000/svg','path');
         path.setAttribute('d', loc.path);
         path.setAttribute('class','pref-path');
-        // ID（JP-01等）→ 内部コード変換
         const code = PREF_CODE_MAP[loc.id]
           || (loc.name||'').toLowerCase()
               .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
@@ -499,6 +496,10 @@
         svgEl.appendChild(path);
       });
 
+      // getBBox() はDOM反映後に呼ぶ必要があるため1フレーム待つ
+      await new Promise(r => requestAnimationFrame(r));
+      applyWeatherLayout(svgEl);
+
       loading.style.display='none';
       mapRendered=true;
       updateMapColors();
@@ -506,6 +507,83 @@
       console.error('Map load error:', err);
       loading.innerHTML='<p style="font-size:.75rem;color:var(--muted);text-align:center;padding:1rem">地図の読み込みに失敗しました。<br>インターネット接続を確認してください。</p>';
     }
+  }
+
+  // ── 天気予報スタイルレイアウト ──
+  // 北海道→左上インセット、沖縄→右下インセット、本州+四国+九州→中央メイン
+  function applyWeatherLayout(svg){
+    const hkEl = svg.querySelector('[data-pref-code="hokkaido"]');
+    const okEl = svg.querySelector('[data-pref-code="okinawa"]');
+    if(!hkEl || !okEl) return;
+
+    // 本州・四国・九州の bounding box を計算
+    const mainPaths = [...svg.querySelectorAll('.pref-path')]
+      .filter(p => !['hokkaido','okinawa'].includes(p.getAttribute('data-pref-code')));
+
+    let mX0=Infinity,mY0=Infinity,mX1=-Infinity,mY1=-Infinity;
+    mainPaths.forEach(p=>{
+      try{
+        const b=p.getBBox();
+        if(b.width===0&&b.height===0) return;
+        mX0=Math.min(mX0,b.x); mY0=Math.min(mY0,b.y);
+        mX1=Math.max(mX1,b.x+b.width); mY1=Math.max(mY1,b.y+b.height);
+      }catch(e){}
+    });
+    if(!isFinite(mX0)) return;
+
+    const mW=mX1-mX0, mH=mY1-mY0;
+    const pad=mW*0.025;
+
+    // インセット枠のサイズ（メイン地図に対する割合）
+    const hkW=mW*0.33, hkH=mH*0.28;
+    const okW=mW*0.26, okH=mH*0.20;
+    const gap=mW*0.015;
+
+    // 新しい viewBox（メイン地図 + 左上に北海道スペース + 右下に沖縄スペース）
+    const vbX = mX0 - hkW - gap - pad;
+    const vbY = mY0 - pad;
+    const vbW = mW + hkW + gap + pad*2;
+    const vbH = mH + pad*2;
+    svg.setAttribute('viewBox', `${vbX} ${vbY} ${vbW} ${vbH}`);
+
+    // ── 北海道：左上 ──
+    const hkBox = hkEl.getBBox();
+    const hkScale = Math.min(hkW/hkBox.width, hkH/hkBox.height) * 0.90;
+    const hkDX = vbX + pad;
+    const hkDY = vbY + pad;
+    hkEl.setAttribute('transform',
+      `translate(${hkDX - hkBox.x*hkScale},${hkDY - hkBox.y*hkScale}) scale(${hkScale})`);
+
+    // 北海道の枠線
+    addInsetBox(svg, hkEl,
+      hkDX - pad*0.4, hkDY - pad*0.4,
+      hkBox.width*hkScale + pad*0.8, hkBox.height*hkScale + pad*0.8);
+
+    // ── 沖縄：右下 ──
+    const okBox = okEl.getBBox();
+    const okScale = Math.min(okW/okBox.width, okH/okBox.height) * 0.90;
+    const okDX = vbX + vbW - okBox.width*okScale - pad;
+    const okDY = vbY + vbH - okBox.height*okScale - pad;
+    okEl.setAttribute('transform',
+      `translate(${okDX - okBox.x*okScale},${okDY - okBox.y*okScale}) scale(${okScale})`);
+
+    // 沖縄の枠線
+    addInsetBox(svg, okEl,
+      okDX - pad*0.4, okDY - pad*0.4,
+      okBox.width*okScale + pad*0.8, okBox.height*okScale + pad*0.8);
+  }
+
+  function addInsetBox(svg, beforeEl, x, y, w, h){
+    const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x', x);
+    rect.setAttribute('y', y);
+    rect.setAttribute('width', w);
+    rect.setAttribute('height', h);
+    rect.setAttribute('fill','none');
+    rect.setAttribute('stroke','#C8C4BC');
+    rect.setAttribute('stroke-width','1.5');
+    rect.setAttribute('rx','2');
+    svg.insertBefore(rect, beforeEl);
   }
 
 
