@@ -19,7 +19,7 @@
     #login-screen.hide{opacity:0;pointer-events:none;}
     .l-wrap{width:100%;max-width:360px;}
     .l-eyebrow{text-align:center;font-size:.65rem;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;margin-bottom:1.25rem;}
-    .l-title{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:400;text-align:center;line-height:1.2;margin-bottom:2.75rem;}
+    .l-title{word-break:keep-all;overflow-wrap:anywhere;font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:400;text-align:center;line-height:1.2;margin-bottom:2.75rem;}
     .l-title em{font-style:italic;color:var(--gold);}
     .field{margin-bottom:1.75rem;}
     .field label{display:block;font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:.55rem;}
@@ -89,7 +89,7 @@
     .letter-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
     .letter-to{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);}
     .letter-date{font-size:.62rem;color:var(--muted);letter-spacing:.08em;}
-    .letter-text{font-family:'Playfair Display',serif;font-size:.97rem;font-weight:400;line-height:2.1;color:var(--text);}
+    .letter-text{word-break:keep-all;overflow-wrap:anywhere;line-break:strict;font-family:'Playfair Display',serif;font-size:.97rem;font-weight:400;line-height:2.1;color:var(--text);}
     .letter-signature{margin-top:1.5rem;text-align:right;font-family:'Playfair Display',serif;font-style:italic;font-size:.9rem;color:var(--muted);}
 
     /* ─── TAB BAR ─── */
@@ -128,7 +128,7 @@
 <div id="login-screen">
   <div class="l-wrap">
     <p class="l-eyebrow">えりちゃん</p>
-    <h1 class="l-title">お誕生日おめでとうサイトへ<br><em>ようこそ！</em></h1>
+    <h1 class="l-title">お誕生日<wbr>おめでとう<wbr>サイトへ<br><em>ようこそ！</em></h1>
     <div class="field"><label for="inp-id">Name</label><input type="text" id="inp-id" placeholder="your name" autocomplete="off" autocapitalize="none" spellcheck="false"></div>
     <div class="field"><label for="inp-pw">Birthday</label><input type="password" id="inp-pw" placeholder="••••••••"></div>
     <button class="l-btn" id="login-btn">Open →</button>
@@ -172,7 +172,7 @@
     <div id="view-message" class="view">
       <div class="letter-card">
         <div class="letter-meta"><span class="letter-to"> えりへ　</span><span class="letter-date">2026.10.22</span></div>
-        <p class="letter-text">えり<br>お誕生日おめでとう 🎂<br><br>今年は北海道も行ってめっちゃ楽しかったね<br><br>さて、本題のプレゼントについてですが…<br>今年はなんと！<br>えりが自由に使えるチケットをプレゼントしようと思います‼︎<br>普段気を遣っちゃってた分、今回はチケットを使って欲しいもの買おうね😊<br><br>『最後に』<br>今年も色々と覚えが悪くて怒らせちゃったりしてごめんね。<br>たまに言われすぎて泣きそうな時もあったけど<br>なんだかんだ優しくしてくれたえりが好きです<br>頑張って直していきます<br>去年は色々話すことが多くあったけど<br>今年、来年からはまたもっと仲良く楽しく一緒に過ごそうね<br>大好きだよ</p>
+        <p class="letter-text">えり<br>お誕生日<wbr>おめでとう 🎂<br><br>今年は<wbr>北海道も<wbr>行って<wbr>めっちゃ<wbr>楽しかったね<br><br>さて、<wbr>本題の<wbr>プレゼントについてですが…<br>今年は<wbr>なんと！<br>えりが<wbr>自由に<wbr>使える<wbr>チケットを<wbr>プレゼントしようと<wbr>思います‼︎<br>普段<wbr>気を遣っちゃってた分、<wbr>今回は<wbr>チケットを<wbr>使って<wbr>欲しいもの<wbr>買おうね😊<br><br>『最後に』<br>今年も<wbr>色々と<wbr>覚えが悪くて<wbr>怒らせちゃったりして<wbr>ごめんね。<br>たまに<wbr>言われすぎて<wbr>泣きそうな時も<wbr>あったけど<br>なんだかんだ<wbr>優しくしてくれた<wbr>えりが<wbr>好きです<br>頑張って<wbr>直していきます<br>去年は<wbr>色々<wbr>話すことが<wbr>多くあったけど<br>今年、<wbr>来年からは<wbr>また<wbr>もっと<wbr>仲良く<wbr>楽しく<wbr>一緒に<wbr>過ごそうね<br>大好きだよ</p>
         <div class="letter-signature">ゆいと より</div>
       </div>
     </div>
