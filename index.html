@@ -10,7 +10,6 @@
     :root {
       --bg:#F8F7F4; --card:#FFFFFF; --text:#1C1C1C; --muted:#9A9189;
       --gold:#B8936A; --gold-pale:#EEE0D0; --border:#E5E0D8;
-      --pref-green:#6B9E6B; --pref-green-dark:#4D7A4D; --pref-gray:#D0CCC4;
     }
     html,body{height:100%;overflow:hidden;}
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);}
@@ -93,76 +92,6 @@
     .letter-text{font-family:'Playfair Display',serif;font-size:.97rem;font-weight:400;line-height:2.1;color:var(--text);}
     .letter-signature{margin-top:1.5rem;text-align:right;font-family:'Playfair Display',serif;font-style:italic;font-size:.9rem;color:var(--muted);}
 
-    /* ─── MEMORIES ─── */
-    .mem-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem;}
-    .map-eyebrow{font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);}
-    .edit-toggle-btn{font-family:'DM Sans',sans-serif;font-size:.62rem;letter-spacing:.1em;padding:.32rem .85rem;border:1.5px solid var(--border);border-radius:100px;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;}
-    .edit-toggle-btn.on{border-color:var(--gold);color:var(--gold);background:rgba(184,147,106,.06);}
-    .map-hint{font-size:.68rem;color:var(--muted);margin-bottom:.9rem;line-height:1.5;}
-    .edit-hint{color:var(--gold);}
-    .map-legend{display:flex;gap:1.1rem;margin-bottom:1rem;}
-    .legend-row{display:flex;align-items:center;gap:.4rem;font-size:.62rem;color:var(--muted);}
-    .legend-dot{width:9px;height:9px;border-radius:50%;}
-    .legend-dot.g{background:var(--pref-green);}
-    .legend-dot.gr{background:var(--pref-gray);border:1px solid var(--border);}
-    .legend-dot.gp{background:var(--pref-green);position:relative;}
-    .legend-dot.gp::after{content:'';position:absolute;top:1px;right:1px;width:3px;height:3px;border-radius:50%;background:white;}
-
-    /* ─── JAPAN MAP ─── */
-    #map-container{
-      width:100%; margin-bottom:1.25rem;
-      background:var(--card); border:1px solid var(--border); border-radius:6px;
-      overflow:hidden;
-    }
-    #map-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.75rem;gap:.6rem;}
-    .map-spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .75s linear infinite;}
-    #map-loading p{font-size:.72rem;color:var(--muted);}
-    #japan-svg{width:100%;display:none;}
-    /* 都道府県パス（D3が描画） */
-    .pref-path{
-      stroke:white; stroke-width:.55; stroke-linejoin:round;
-      fill:var(--pref-gray);
-      transition:fill .35s cubic-bezier(.4,0,.2,1);
-    }
-    .pref-path.visited{ fill:var(--pref-green); }
-
-    /* ─── 都道府県グリッド ─── */
-    .region-section{margin-bottom:1rem;}
-    .region-label{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;padding-left:.1rem;}
-    .pref-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.38rem;}
-    .pref-btn{position:relative;min-height:38px;display:flex;align-items:center;justify-content:center;padding:.4rem .2rem;border:1.5px solid var(--border);border-radius:7px;background:var(--pref-gray);font-family:'DM Sans',sans-serif;font-size:.7rem;color:var(--muted);text-align:center;cursor:default;transition:transform .12s,opacity .2s,background .2s;-webkit-tap-highlight-color:transparent;}
-    .pref-btn.visited{background:var(--pref-green);border-color:var(--pref-green);color:white;font-weight:500;}
-    .pref-btn.has-photos::after{content:'';position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.9);}
-    .pref-btn.tappable{cursor:pointer;}
-    .pref-btn.tappable:active{transform:scale(.92);}
-    .pref-btn.visited.tappable:active{background:var(--pref-green-dark);}
-    .pref-btn.edit-tappable{cursor:pointer;border-style:dashed;opacity:.7;}
-    .pref-btn.edit-tappable:active{transform:scale(.92);opacity:1;}
-
-    /* ─── TOAST ─── */
-    #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(28,28,28,.82);color:white;font-size:.78rem;padding:.55rem 1.25rem;border-radius:100px;white-space:nowrap;z-index:700;opacity:0;pointer-events:none;transition:opacity .25s;}
-    #toast.show{opacity:1;}
-
-    /* ─── STORY VIEWER ─── */
-    #story-viewer{position:fixed;inset:0;z-index:600;background:#0A0A0A;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s cubic-bezier(.4,0,.2,1);}
-    #story-viewer.show{opacity:1;pointer-events:all;}
-    .sv-header{position:absolute;top:0;left:0;right:0;z-index:10;padding:env(safe-area-inset-top,14px) 12px 0;}
-    .sv-bars{display:flex;gap:4px;margin-bottom:10px;}
-    .sv-bar{flex:1;height:2px;background:rgba(255,255,255,.28);border-radius:1px;overflow:hidden;}
-    .sv-bar-fill{height:100%;background:rgba(255,255,255,.88);width:0;border-radius:1px;}
-    .sv-bar-fill.done{width:100%;} .sv-bar-fill.current{width:55%;}
-    .sv-meta{display:flex;align-items:center;justify-content:space-between;}
-    .sv-pref-label{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.82);}
-    .sv-close-btn{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:rgba(255,255,255,.85);font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-    .sv-img-wrap{flex:1;position:relative;overflow:hidden;}
-    .sv-img-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .22s ease;}
-    .sv-img-wrap img.fading{opacity:0;}
-    .sv-caption{position:absolute;bottom:0;left:0;right:0;padding:3.5rem 1.4rem calc(env(safe-area-inset-bottom,0px) + 1.5rem);background:linear-gradient(to top,rgba(0,0,0,.7) 0%,rgba(0,0,0,.28) 55%,transparent 100%);pointer-events:none;}
-    .sv-cap-loc{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:.4rem;}
-    .sv-cap-text{font-family:'Playfair Display',serif;font-size:1.05rem;color:rgba(255,255,255,.95);line-height:1.65;}
-    .sv-tap-prev{position:absolute;left:0;top:80px;bottom:0;width:38%;z-index:5;cursor:pointer;}
-    .sv-tap-next{position:absolute;right:0;top:80px;bottom:0;width:38%;z-index:5;cursor:pointer;}
-
     /* ─── TAB BAR ─── */
     .tab-bar{flex-shrink:0;display:flex;background:var(--card);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,0px);}
     .tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.26rem;padding:.68rem .25rem;background:transparent;border:none;cursor:pointer;color:var(--muted);transition:color .2s;}
@@ -190,7 +119,6 @@
     @keyframes fadeSlideUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
     @keyframes numPop{0%{opacity:0;transform:translateY(-6px);}100%{opacity:1;transform:translateY(0);}}
     @keyframes ticketFlash{0%{background:var(--gold-pale);}100%{background:var(--card);}}
-    @keyframes spin{to{transform:rotate(360deg);}}
     .ticket.flash{animation:ticketFlash .5s ease forwards;}
   </style>
 </head>
@@ -249,33 +177,7 @@
       </div>
     </div>
 
-    <!-- ③ 思い出 -->
-    <div id="view-memories" class="view">
-      <div class="mem-top">
-        <p class="map-eyebrow">思い出の地図</p>
-        <button id="edit-toggle-btn" class="edit-toggle-btn" style="display:none" onclick="toggleEditMode()">編集する</button>
-      </div>
-      <p class="map-hint" id="map-hint">緑の県をタップすると写真が見られるよ 📍</p>
-      <div class="map-legend">
-        <div class="legend-row"><div class="legend-dot g"></div><span>行ったよ</span></div>
-        <div class="legend-row"><div class="legend-dot gp"></div><span>写真あり</span></div>
-        <div class="legend-row"><div class="legend-dot gr"></div><span>まだこれから</span></div>
-      </div>
-
-      <!-- 日本地図（D3.js が描画・visitedPrefsと連動） -->
-      <div id="map-container">
-        <div id="map-loading">
-          <div class="map-spinner"></div>
-          <p>地図を読み込んでいます...</p>
-        </div>
-        <svg id="japan-svg"></svg>
-      </div>
-
-      <!-- 都道府県グリッド -->
-      <div id="pref-regions"></div>
-    </div>
-
-    <!-- ④ 使用済み -->
+    <!-- ③ 使用済み -->
     <div id="view-used" class="view">
       <div id="used-empty" class="empty-state"><div class="empty-icon">🎟️</div><p class="empty-text">まだ使用した<br>チケットはありません</p></div>
       <div class="ticket-list" id="used-list"></div>
@@ -291,10 +193,6 @@
     <button class="tab-btn" id="tab-message" onclick="switchTab('message',this)">
       <div class="tab-icon-wrap"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
       <span class="tab-label">メッセージ</span>
-    </button>
-    <button class="tab-btn" id="tab-memories" onclick="switchTab('memories',this)">
-      <div class="tab-icon-wrap"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-      <span class="tab-label">思い出</span>
     </button>
     <button class="tab-btn" id="tab-used" onclick="switchTab('used',this)">
       <div class="tab-icon-wrap"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="tab-badge" id="used-badge">0</span></div>
@@ -312,19 +210,6 @@
   </div>
 </div>
 
-<!-- STORY VIEWER -->
-<div id="story-viewer">
-  <div class="sv-header"><div class="sv-bars" id="sv-bars"></div><div class="sv-meta"><span class="sv-pref-label" id="sv-pref-label"></span><button class="sv-close-btn" onclick="closeStory()">✕</button></div></div>
-  <div class="sv-img-wrap"><img id="sv-img" src="" alt=""><div class="sv-caption"><p class="sv-cap-loc" id="sv-cap-loc"></p><p class="sv-cap-text" id="sv-cap-text"></p></div></div>
-  <div class="sv-tap-prev" onclick="storyStep(-1)"></div>
-  <div class="sv-tap-next" onclick="storyStep(1)"></div>
-</div>
-
-<!-- TOAST -->
-<div id="toast"></div>
-
-<!-- @svg-maps/japan を esm.sh 経由で動的importする（D3不要） -->
-
 <script>
   /* ================================================================
      設定
@@ -336,35 +221,6 @@
   const ADMIN_ID   = 'admin';
   const ADMIN_PW   = 'admin0000';
 
-  /* ================================================================
-     思い出データ（写真あり都道府県）
-     ・新しい県を追加するときはここにオブジェクトを追記するだけ
-     ・コードは下のREGIONSリストのcodeと同じ文字列を使う
-  ================================================================ */
-  const MEMORIES = {
-    hokkaido: {
-      name: '北海道',
-      slides: [
-        { src: 'hokkaido1.jpg', location: '北海道', caption: '北海道の広大な一本道' }
-      ]
-    }
-  };
-
-  /* ================================================================
-     全47都道府県（地方別）
-  ================================================================ */
-  const REGIONS = [
-    { label:'北海道', prefs:[{code:'hokkaido',name:'北海道'}]},
-    { label:'東北', prefs:[{code:'aomori',name:'青森'},{code:'iwate',name:'岩手'},{code:'miyagi',name:'宮城'},{code:'akita',name:'秋田'},{code:'yamagata',name:'山形'},{code:'fukushima',name:'福島'}]},
-    { label:'関東', prefs:[{code:'ibaraki',name:'茨城'},{code:'tochigi',name:'栃木'},{code:'gunma',name:'群馬'},{code:'saitama',name:'埼玉'},{code:'chiba',name:'千葉'},{code:'tokyo',name:'東京'},{code:'kanagawa',name:'神奈川'}]},
-    { label:'中部', prefs:[{code:'niigata',name:'新潟'},{code:'toyama',name:'富山'},{code:'ishikawa',name:'石川'},{code:'fukui',name:'福井'},{code:'yamanashi',name:'山梨'},{code:'nagano',name:'長野'},{code:'gifu',name:'岐阜'},{code:'shizuoka',name:'静岡'},{code:'aichi',name:'愛知'}]},
-    { label:'近畿', prefs:[{code:'mie',name:'三重'},{code:'shiga',name:'滋賀'},{code:'kyoto',name:'京都'},{code:'osaka',name:'大阪'},{code:'hyogo',name:'兵庫'},{code:'nara',name:'奈良'},{code:'wakayama',name:'和歌山'}]},
-    { label:'中国', prefs:[{code:'tottori',name:'鳥取'},{code:'shimane',name:'島根'},{code:'okayama',name:'岡山'},{code:'hiroshima',name:'広島'},{code:'yamaguchi',name:'山口'}]},
-    { label:'四国', prefs:[{code:'tokushima',name:'徳島'},{code:'kagawa',name:'香川'},{code:'ehime',name:'愛媛'},{code:'kochi',name:'高知'}]},
-    { label:'九州', prefs:[{code:'fukuoka',name:'福岡'},{code:'saga',name:'佐賀'},{code:'nagasaki',name:'長崎'},{code:'kumamoto',name:'熊本'},{code:'oita',name:'大分'},{code:'miyazaki',name:'宮崎'},{code:'kagoshima',name:'鹿児島'}]},
-    { label:'沖縄', prefs:[{code:'okinawa',name:'沖縄'}]}
-  ];
-
   const TICKETS = [
     {id:1,name:'欲しいもの一点買えるよ券',  total:1 },
     {id:2,name:'1日なんでも言うこと聞く券',  total:5 },
@@ -374,23 +230,8 @@
 
   const counts      = Object.fromEntries(TICKETS.map(t=>[t.id,t.total]));
   const usedCounts  = Object.fromEntries(TICKETS.map(t=>[t.id,0]));
-  let pendingId=null, currentTab='tickets', cdTimer=null, isAdmin=false, editMode=false;
-  const TICKET_KEY='gift_tickets_eririn_2026', VISITED_KEY='visited_prefs_eririn_2026';
-  let storyPref=null, storyIdx=0, touchStartX=0, touchStartY=0;
-  let visitedPrefs={};
-
-  // 地図状態
-  let mapRendered = false;
-
-  /* ── visitedPrefs ── */
-  function loadVisited(){
-    try{
-      const s=localStorage.getItem(VISITED_KEY);
-      if(s){visitedPrefs=JSON.parse(s);}
-      else{visitedPrefs={};Object.keys(MEMORIES).forEach(c=>{visitedPrefs[c]=true;});saveVisited();}
-    }catch(e){visitedPrefs={};}
-  }
-  function saveVisited(){try{localStorage.setItem(VISITED_KEY,JSON.stringify(visitedPrefs));}catch(e){}}
+  let pendingId=null, currentTab='tickets', cdTimer=null, isAdmin=false;
+  const TICKET_KEY='gift_tickets_eririn_2026';
 
   /* ── Ticket storage ── */
   function saveState(){try{const d={};TICKETS.forEach(t=>{d[t.id]={rem:counts[t.id],used:usedCounts[t.id]};});localStorage.setItem(TICKET_KEY,JSON.stringify(d));}catch(e){}}
@@ -420,7 +261,7 @@
   function unlock(){document.getElementById('cd-wrap').innerHTML=`<div class="unlock-wrap"><p class="unlock-emoji">🎂</p><h1 class="unlock-title">Happy<br><em>Birthday</em></h1><p style="margin-top:.75rem;font-size:.8rem;color:var(--muted);letter-spacing:.15em">えり 🎉</p></div>`;setTimeout(()=>{const cs=document.getElementById('countdown-screen');cs.classList.add('fade-out');setTimeout(()=>{cs.style.display='none';openApp();},600);},2500);}
 
   function openApp(){
-    loadState();loadVisited();updateBadge();renderTickets();
+    loadState();updateBadge();renderTickets();
     document.getElementById('admin-badge').style.display=isAdmin?'block':'none';
     document.getElementById('app-screen').style.display='flex';
   }
@@ -435,214 +276,7 @@
     next.classList.remove('active');void next.offsetWidth;next.classList.add('active');
     currentTab=tab;
     if(tab==='used')renderUsed();
-    if(tab==='memories'){renderPrefGrid();initMap();}
   }
-
-
-  /* ================================================================
-     日本地図（@svg-maps/japan + esm.sh）
-     D3・外部GeoJSON不要。esm.sh経由でSVGパスデータを取得。
-  ================================================================ */
-
-  // ISO 3166-2:JP コード → 内部コードマッピング
-  const PREF_CODE_MAP = {
-    'JP-01':'hokkaido','JP-02':'aomori','JP-03':'iwate','JP-04':'miyagi',
-    'JP-05':'akita','JP-06':'yamagata','JP-07':'fukushima','JP-08':'ibaraki',
-    'JP-09':'tochigi','JP-10':'gunma','JP-11':'saitama','JP-12':'chiba',
-    'JP-13':'tokyo','JP-14':'kanagawa','JP-15':'niigata','JP-16':'toyama',
-    'JP-17':'ishikawa','JP-18':'fukui','JP-19':'yamanashi','JP-20':'nagano',
-    'JP-21':'gifu','JP-22':'shizuoka','JP-23':'aichi','JP-24':'mie',
-    'JP-25':'shiga','JP-26':'kyoto','JP-27':'osaka','JP-28':'hyogo',
-    'JP-29':'nara','JP-30':'wakayama','JP-31':'tottori','JP-32':'shimane',
-    'JP-33':'okayama','JP-34':'hiroshima','JP-35':'yamaguchi','JP-36':'tokushima',
-    'JP-37':'kagawa','JP-38':'ehime','JP-39':'kochi','JP-40':'fukuoka',
-    'JP-41':'saga','JP-42':'nagasaki','JP-43':'kumamoto','JP-44':'oita',
-    'JP-45':'miyazaki','JP-46':'kagoshima','JP-47':'okinawa'
-  };
-
-  // visitedPrefs の状態を地図パスに反映（CSS classで色管理）
-  function updateMapColors(){
-    if(!mapRendered)return;
-    document.querySelectorAll('#japan-svg .pref-path').forEach(path=>{
-      const code=path.getAttribute('data-pref-code');
-      if(visitedPrefs[code]){path.classList.add('visited');}
-      else{path.classList.remove('visited');}
-    });
-  }
-
-  async function initMap(){
-    if(mapRendered){updateMapColors();return;}
-    const loading=document.getElementById('map-loading');
-    try{
-      const mod = await import('https://esm.sh/@svg-maps/japan');
-      const japanMap = mod.default || mod;
-
-      const svgEl=document.getElementById('japan-svg');
-      svgEl.setAttribute('viewBox', japanMap.viewBox);
-      svgEl.setAttribute('width','100%');
-      svgEl.setAttribute('height','auto');
-      svgEl.style.display='block';
-
-      // 都道府県パスを描画
-      japanMap.locations.forEach(loc=>{
-        const path=document.createElementNS('http://www.w3.org/2000/svg','path');
-        path.setAttribute('d', loc.path);
-        path.setAttribute('class','pref-path');
-        const code = PREF_CODE_MAP[loc.id]
-          || (loc.name||'').toLowerCase()
-              .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-              .trim().replace(/\s+/g,'_');
-        path.setAttribute('data-pref-code', code);
-        svgEl.appendChild(path);
-      });
-
-      // getBBox() はDOM反映後に呼ぶ必要があるため1フレーム待つ
-      await new Promise(r => requestAnimationFrame(r));
-      applyWeatherLayout(svgEl);
-
-      loading.style.display='none';
-      mapRendered=true;
-      updateMapColors();
-    }catch(err){
-      console.error('Map load error:', err);
-      loading.innerHTML='<p style="font-size:.75rem;color:var(--muted);text-align:center;padding:1rem">地図の読み込みに失敗しました。<br>インターネット接続を確認してください。</p>';
-    }
-  }
-
-  // ── 天気予報スタイルレイアウト ──
-  // 北海道→左上インセット、沖縄→右下インセット、本州+四国+九州→中央メイン
-  function applyWeatherLayout(svg){
-    const hkEl = svg.querySelector('[data-pref-code="hokkaido"]');
-    const okEl = svg.querySelector('[data-pref-code="okinawa"]');
-    if(!hkEl || !okEl) return;
-
-    // 本州・四国・九州の bounding box を計算
-    const mainPaths = [...svg.querySelectorAll('.pref-path')]
-      .filter(p => !['hokkaido','okinawa'].includes(p.getAttribute('data-pref-code')));
-
-    let mX0=Infinity,mY0=Infinity,mX1=-Infinity,mY1=-Infinity;
-    mainPaths.forEach(p=>{
-      try{
-        const b=p.getBBox();
-        if(b.width===0&&b.height===0) return;
-        mX0=Math.min(mX0,b.x); mY0=Math.min(mY0,b.y);
-        mX1=Math.max(mX1,b.x+b.width); mY1=Math.max(mY1,b.y+b.height);
-      }catch(e){}
-    });
-    if(!isFinite(mX0)) return;
-
-    const mW=mX1-mX0, mH=mY1-mY0;
-    const pad=mW*0.025;
-
-    // インセット枠のサイズ（メイン地図に対する割合）
-    const hkW=mW*0.33, hkH=mH*0.28;
-    const okW=mW*0.26, okH=mH*0.20;
-    const gap=mW*0.015;
-
-    // 新しい viewBox（メイン地図 + 左上に北海道スペース + 右下に沖縄スペース）
-    const vbX = mX0 - hkW - gap - pad;
-    const vbY = mY0 - pad;
-    const vbW = mW + hkW + gap + pad*2;
-    const vbH = mH + pad*2;
-    svg.setAttribute('viewBox', `${vbX} ${vbY} ${vbW} ${vbH}`);
-
-    // ── 北海道：左上 ──
-    const hkBox = hkEl.getBBox();
-    const hkScale = Math.min(hkW/hkBox.width, hkH/hkBox.height) * 0.90;
-    const hkDX = vbX + pad;
-    const hkDY = vbY + pad;
-    hkEl.setAttribute('transform',
-      `translate(${hkDX - hkBox.x*hkScale},${hkDY - hkBox.y*hkScale}) scale(${hkScale})`);
-
-    // 北海道の枠線
-    addInsetBox(svg, hkEl,
-      hkDX - pad*0.4, hkDY - pad*0.4,
-      hkBox.width*hkScale + pad*0.8, hkBox.height*hkScale + pad*0.8);
-
-    // ── 沖縄：右下 ──
-    const okBox = okEl.getBBox();
-    const okScale = Math.min(okW/okBox.width, okH/okBox.height) * 0.90;
-    const okDX = vbX + vbW - okBox.width*okScale - pad;
-    const okDY = vbY + vbH - okBox.height*okScale - pad;
-    okEl.setAttribute('transform',
-      `translate(${okDX - okBox.x*okScale},${okDY - okBox.y*okScale}) scale(${okScale})`);
-
-    // 沖縄の枠線
-    addInsetBox(svg, okEl,
-      okDX - pad*0.4, okDY - pad*0.4,
-      okBox.width*okScale + pad*0.8, okBox.height*okScale + pad*0.8);
-  }
-
-  function addInsetBox(svg, beforeEl, x, y, w, h){
-    const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
-    rect.setAttribute('x', x);
-    rect.setAttribute('y', y);
-    rect.setAttribute('width', w);
-    rect.setAttribute('height', h);
-    rect.setAttribute('fill','none');
-    rect.setAttribute('stroke','#C8C4BC');
-    rect.setAttribute('stroke-width','1.5');
-    rect.setAttribute('rx','2');
-    svg.insertBefore(rect, beforeEl);
-  }
-
-
-
-  /* ================================================================
-     都道府県グリッド
-  ================================================================ */
-  function renderPrefGrid(){
-    document.getElementById('edit-toggle-btn').style.display=isAdmin?'flex':'none';
-    const container=document.getElementById('pref-regions');
-    container.innerHTML='';
-    REGIONS.forEach(({label,prefs})=>{
-      const sec=document.createElement('div');sec.className='region-section';
-      const rl=document.createElement('div');rl.className='region-label';rl.textContent=label;sec.appendChild(rl);
-      const grid=document.createElement('div');grid.className='pref-grid';
-      prefs.forEach(({code,name})=>{
-        const visited=!!visitedPrefs[code], hasPhotos=!!MEMORIES[code];
-        const btn=document.createElement('button');
-        let cls='pref-btn';
-        if(visited)cls+=' visited';
-        if(hasPhotos)cls+=' has-photos';
-        if(editMode){cls+=(visited?' tappable':' edit-tappable');}
-        else{if(visited&&hasPhotos)cls+=' tappable';}
-        btn.className=cls;btn.textContent=name;
-        btn.addEventListener('click',()=>onPrefTap(code,visited,hasPhotos));
-        grid.appendChild(btn);
-      });
-      sec.appendChild(grid);container.appendChild(sec);
-    });
-  }
-
-  function onPrefTap(code,visited,hasPhotos){
-    if(editMode){
-      // 写真ありの県は常に訪問済み（外せない）
-      if(MEMORIES[code])return;
-      visitedPrefs[code]=!visitedPrefs[code];
-      saveVisited();
-      renderPrefGrid();
-      updateMapColors(); // 地図も連動更新
-    }else{
-      if(visited&&hasPhotos){openStory(code);}
-      else if(visited&&!hasPhotos){showToast('写真はまだないよ 📷');}
-    }
-  }
-
-  function toggleEditMode(){
-    editMode=!editMode;
-    const btn=document.getElementById('edit-toggle-btn');
-    btn.textContent=editMode?'完了':'編集する';
-    btn.classList.toggle('on',editMode);
-    document.getElementById('map-hint').innerHTML=editMode
-      ?'<span class="edit-hint">タップして緑↔グレーを切り替えられます ✏️</span>'
-      :'緑の県をタップすると写真が見られるよ 📍';
-    renderPrefGrid();
-  }
-
-  /* ── Toast ── */
-  let toastTimer=null;
-  function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2000);}
 
   /* ── Modal ── */
   function openModal(id){pendingId=id;document.getElementById('m-name').textContent=TICKETS.find(t=>t.id===id).name;document.getElementById('modal-overlay').classList.add('show');}
@@ -653,17 +287,6 @@
   function renderTickets(){const list=document.getElementById('ticket-list');list.innerHTML='';TICKETS.forEach(t=>{const rem=counts[t.id],empty=rem===0;const el=document.createElement('div');el.className='ticket'+(empty?' empty':'');el.id='tk-'+t.id;el.innerHTML=`<div class="stub"><span>ticket</span></div><div class="t-body"><div class="t-info"><div class="t-name">${t.name}</div><div class="t-count">${empty?'使い切りました':`残り <strong>${rem}</strong> 枚`}</div></div><button class="use-btn" data-id="${t.id}" ${empty?'disabled':''}>${empty?'済':'使う'}</button></div>`;list.appendChild(el);});list.querySelectorAll('.use-btn:not(:disabled)').forEach(btn=>{btn.addEventListener('click',()=>openModal(Number(btn.dataset.id)));});}
   function renderUsed(){const ul=document.getElementById('used-list'),ee=document.getElementById('used-empty'),any=TICKETS.some(t=>usedCounts[t.id]>0);if(!any){ee.style.display='block';ul.innerHTML='';return;}ee.style.display='none';ul.innerHTML='';TICKETS.forEach(t=>{if(!usedCounts[t.id])return;const el=document.createElement('div');el.className='ticket used-card';el.innerHTML=`<div class="stub"><span>used</span></div><div class="t-body"><div class="t-info"><div class="t-name">${t.name}</div><div class="t-count">${usedCounts[t.id]}枚 使用済み</div></div><span class="used-badge-card">✓ 済</span></div>`;ul.appendChild(el);});}
   function updateBadge(){const total=TICKETS.reduce((s,t)=>s+usedCounts[t.id],0);const b=document.getElementById('used-badge');b.textContent=total;b.style.display=total>0?'flex':'none';}
-
-  /* ── Story Viewer ── */
-  function openStory(pref){const data=MEMORIES[pref];if(!data||!data.slides.length)return;storyPref=pref;storyIdx=0;document.getElementById('sv-pref-label').textContent=data.name;applySlide(data.slides[0]);renderBars(data.slides.length);document.getElementById('story-viewer').classList.add('show');}
-  function closeStory(){document.getElementById('story-viewer').classList.remove('show');storyPref=null;}
-  function storyStep(dir){const data=MEMORIES[storyPref];const next=storyIdx+dir;if(next<0||next>=data.slides.length){closeStory();return;}const img=document.getElementById('sv-img');img.classList.add('fading');setTimeout(()=>{storyIdx=next;applySlide(data.slides[storyIdx]);renderBars(data.slides.length);img.classList.remove('fading');},210);}
-  function applySlide(slide){document.getElementById('sv-img').src=slide.src;document.getElementById('sv-cap-loc').textContent=slide.location;document.getElementById('sv-cap-text').textContent=slide.caption;}
-  function renderBars(total){const bars=document.getElementById('sv-bars');bars.innerHTML='';for(let i=0;i<total;i++){const bar=document.createElement('div');bar.className='sv-bar';const fill=document.createElement('div');fill.className='sv-bar-fill'+(i<storyIdx?' done':i===storyIdx?' current':'');bar.appendChild(fill);bars.appendChild(bar);}}
-
-  const sv=document.getElementById('story-viewer');
-  sv.addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;touchStartY=e.touches[0].clientY;},{passive:true});
-  sv.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-touchStartX,dy=e.changedTouches[0].clientY-touchStartY;if(Math.abs(dx)>44&&Math.abs(dx)>Math.abs(dy)*1.5)storyStep(dx<0?1:-1);},{passive:true});
 </script>
 </body>
 </html>
